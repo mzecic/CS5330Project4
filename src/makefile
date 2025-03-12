@@ -19,13 +19,17 @@ LDLIBS = -ltiff -lpng -ljpeg -llapack -lblas -lz -ljasper -lwebp -framework AVFo
 BINDIR = ../bin
 
 # Source Files
-PROGRAMS = detectCorners
+PROGRAMS = detectCorners cameraUtil
 
 # Default Target: Build all programs
 all: $(PROGRAMS)
 
 # Individual Targets
 detectCorners: detectCorners.o
+	$(CC) $^ -o $(BINDIR)/$@ $(LDFLAGS) $(LDLIBS)
+	install_name_tool -add_rpath /opt/homebrew/lib $(BINDIR)/$@
+
+cameraUtil: cameraUtil.o
 	$(CC) $^ -o $(BINDIR)/$@ $(LDFLAGS) $(LDLIBS)
 	install_name_tool -add_rpath /opt/homebrew/lib $(BINDIR)/$@
 
