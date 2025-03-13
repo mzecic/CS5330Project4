@@ -13,13 +13,13 @@ LDFLAGS += -L/opt/homebrew/lib
 LDFLAGS += -L/opt/homebrew/opt/protobuf/lib
 
 # Libraries
-LDLIBS = -ltiff -lpng -ljpeg -llapack -lblas -lz -ljasper -lwebp -framework AVFoundation -framework CoreMedia -framework CoreVideo -framework CoreServices -framework CoreGraphics -framework AppKit -framework OpenCL  -lopencv_core -lopencv_highgui -lopencv_video -lopencv_videoio -lopencv_imgcodecs -lopencv_imgproc -lopencv_objdetect -lopencv_calib3d -lonnxruntime -lprotobuf
+LDLIBS = -ltiff -lpng -ljpeg -llapack -lblas -lz -ljasper -lwebp -framework AVFoundation -framework CoreMedia -framework CoreVideo -framework CoreServices -framework CoreGraphics -framework AppKit -framework OpenCL  -lopencv_core -lopencv_highgui -lopencv_video -lopencv_videoio -lopencv_imgcodecs -lopencv_imgproc -lopencv_objdetect -lopencv_calib3d -lopencv_features2d -lonnxruntime -lprotobuf
 
 # Output Directory
 BINDIR = ../bin
 
 # Source Files
-PROGRAMS = detectCorners cameraUtil
+PROGRAMS = detectCorners cameraUtil featureDetection
 
 # Default Target: Build all programs
 all: $(PROGRAMS)
@@ -30,6 +30,10 @@ detectCorners: detectCorners.o
 	install_name_tool -add_rpath /opt/homebrew/lib $(BINDIR)/$@
 
 cameraUtil: cameraUtil.o
+	$(CC) $^ -o $(BINDIR)/$@ $(LDFLAGS) $(LDLIBS)
+	install_name_tool -add_rpath /opt/homebrew/lib $(BINDIR)/$@
+
+featureDetection: featureDetection.o
 	$(CC) $^ -o $(BINDIR)/$@ $(LDFLAGS) $(LDLIBS)
 	install_name_tool -add_rpath /opt/homebrew/lib $(BINDIR)/$@
 
